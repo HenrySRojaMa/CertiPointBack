@@ -1,15 +1,21 @@
+using Application;
 using Infrastructure;
-using InfrastructureDomain;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
 builder.Services.AddOpenApi();
 
-builder.Services.AddScoped<IDataBase, DataBase>();
+builder.Services.Scan(scan => scan
+    .FromAssemblies(//Assembly.Load("Infrastructure"), Assembly.Load("Application")
+    Assembly.GetAssembly(typeof(DataBase)),
+    Assembly.GetAssembly(typeof(SystemBusiness))
+    )
+    .AddClasses()
+    .AsImplementedInterfaces()
+    .WithScopedLifetime());
 
 var app = builder.Build();
 
