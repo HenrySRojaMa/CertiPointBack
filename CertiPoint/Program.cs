@@ -33,6 +33,7 @@ builder.Services.AddControllers(options =>
 });
 
 builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
 
 builder.Services.Scan(scan => scan
     .FromAssemblies(//Assembly.Load("Infrastructure"), Assembly.Load("Application")
@@ -53,6 +54,8 @@ app.UseAuthorization();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
