@@ -7,14 +7,13 @@ namespace EntitiesDomain.Utils
     {
         public static void AddError<T>(this Response<T> response, Exception ex, string currentClass, string currentMethod, bool isGeneric = true)
         {
-            string id = Guid.NewGuid().ToString();
             int lineNumber = 0;
             if (isGeneric)
             {
                 response.Code = System.Net.HttpStatusCode.InternalServerError;
                 response.Message = "Something happened, contact to support.";
             }
-            response.Message += " (" + id + ")";
+            response.Message += " (LOGID)";
             response.Data = default(T);
 
             StackTrace stackTrace = new(ex, true);
@@ -24,7 +23,6 @@ namespace EntitiesDomain.Utils
 
             response.Errors.Add(new()
             {
-                Id = id,
                 ClassName = currentClass,
                 MethodName = currentMethod,
                 LineNumber = lineNumber.ToString(),
@@ -43,6 +41,16 @@ namespace EntitiesDomain.Utils
             response.Message = partial.Message;
             response.Errors.AddRange(partial.Errors);
             return new HttpResponseMessage(partial.Code).IsSuccessStatusCode;
+        }
+        public static Response<object> Result<T>(this Response<T> response)
+        {
+            return new Response<object>()
+            {
+                Code = response.Code,
+                Message = response.Message,
+                Errors = response.Errors,
+                Data = response.Data
+            };
         }
     }
 }

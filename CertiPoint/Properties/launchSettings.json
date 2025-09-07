@@ -21,7 +21,10 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionString": "Data Source=localhost\\SQLEXPRESS;Initial Catalog=CertiPoint;Integrated Security=True;Trust Server Certificate=True"
+        "ConnectionString": "Data Source=localhost\\SQLEXPRESS;Initial Catalog=CertiPoint;Integrated Security=True;Trust Server Certificate=True",
+        "SecurityKey": "",
+        "AddAuthorization": "N",
+        "AddExceptionLog": "Y"
       }
     }
   },

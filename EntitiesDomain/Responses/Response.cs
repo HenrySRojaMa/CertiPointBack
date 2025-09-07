@@ -2,11 +2,10 @@
 {
     public class Response<T>
     {
-        public System.Net.HttpStatusCode Code { get; set; }
+        public System.Net.HttpStatusCode Code { get; set; } = System.Net.HttpStatusCode.OK;
         public string Message { get; set; }
         public T Data { get; set; }
         public List<Error> Errors { get; set; } = new();
-
     }
     public class Error
     {
