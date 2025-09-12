@@ -26,13 +26,10 @@ namespace Infrastructure
                 if (response.IsOk())
                 {
                     ILookup<int?, CatalogItem> lookup = response.Data.ToLookup(x => x.IdParent);
-                    List<CatalogItem> rootItems = response.Data.Where(x => x.IdParent == null).ToList();
-
-                    foreach (var item in rootItems) item.SubItems = GetSubItems(item.Id, lookup);
 
                     response.Code = HttpStatusCode.OK;
                     response.Message = "Query completed successfully";
-                    response.Data = rootItems;
+                    response.Data = GetSubItems(null,lookup);
                 }
             }
             catch (Exception ex)
@@ -41,7 +38,7 @@ namespace Infrastructure
             }
             return response;
         }
-        private List<CatalogItem> GetSubItems(int parentId, ILookup<int?, CatalogItem> lookup)
+        private List<CatalogItem> GetSubItems(int? parentId, ILookup<int?, CatalogItem> lookup)
         {
             List<CatalogItem> subItems = lookup[parentId].ToList();
 

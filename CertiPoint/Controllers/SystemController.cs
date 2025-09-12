@@ -2,6 +2,7 @@
 using EntitiesDomain.Queries;
 using EntitiesDomain.Responses;
 using EntitiesDomain.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CertiPoint.Controllers
@@ -16,7 +17,7 @@ namespace CertiPoint.Controllers
         {
             _system = system;
         }
-
+        [AllowAnonymous]
         [HttpGet("catalogs_list")]
         public async Task<IActionResult> ListCatalogsController([FromQuery] CatalogListQuery query)
         {
