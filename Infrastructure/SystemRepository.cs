@@ -1,4 +1,5 @@
-﻿using EntitiesDomain.Queries;
+﻿using EntitiesDomain.Entities;
+using EntitiesDomain.Queries;
 using EntitiesDomain.Responses;
 using EntitiesDomain.Utils;
 using InfrastructureDomain;
@@ -48,6 +49,51 @@ namespace Infrastructure
             }
 
             return subItems;
+        }
+        public async Task<Response<List<MenuOption>>> ListMenuOptionsProcedure(MenuOptionsQuery query)
+        {
+            Response<List<MenuOption>> response = new();
+            try
+            {
+                Response<(List<Option>, List<Actions>)> access = await _dataBase.QueryMultiple<Option, Actions>("sp_ListMenuOptions", query);
+                if (response.IsOk(access))
+                {
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "Query completed successfully";
+                    response.Data = GetSubOptions(query.IdOption, access.Data.Item1, access.Data.Item2);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex, currentClass, nameof(ListMenuOptionsProcedure));
+            }
+            return response;
+        }
+        private List<MenuOption> GetSubOptions(int idParent, List<Option> options, List<Actions> actions)
+        {
+            return options
+                .Where(m => m.IdParent == idParent)
+                .Select(m => new MenuOption
+                {
+                    IdOption = m.IdOption,
+                    OptionName = m.OptionName,
+                    Route = m.Route,
+                    IdParent = m.IdParent,
+                    Icon = m.Icon,
+                    Actions = GetActions(m.IdOption, actions),
+                    SubOptions = GetSubOptions(m.IdOption, options, actions)
+                }).ToList();
+        }
+        private List<MenuAction> GetActions(int idOption, List<Actions> menuAccessList)
+        {
+            return menuAccessList
+                .Where(m => m.IdOption == idOption)
+                .Select(m => new MenuAction
+                {
+                    IdAction = m.IdAction,
+                    ActionName = m.ActionName,
+                    ActionCode = m.ActionCode
+                }).ToList();
         }
     }
 }

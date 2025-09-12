@@ -4,6 +4,7 @@ using EntitiesDomain.Responses;
 using EntitiesDomain.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CertiPoint.Controllers
 {
@@ -29,6 +30,23 @@ namespace CertiPoint.Controllers
             catch (Exception ex)
             {
                 response.AddError(ex, currentClass, nameof(ListCatalogsController));
+            }
+            return Ok(response.Result());
+        }
+
+        [AllowAnonymous]
+        [HttpGet("menu_list")]
+        public async Task<IActionResult> ListMenuOptionsController([FromQuery] MenuOptionsQuery query)
+        {
+            Response<List<MenuOption>> response = new();
+            try
+            {
+                query.IdUser = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+                response = await _system.ListMenuOptionsService(query);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex, currentClass, nameof(ListMenuOptionsController));
             }
             return Ok(response.Result());
         }

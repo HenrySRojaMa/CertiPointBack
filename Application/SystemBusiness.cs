@@ -27,5 +27,18 @@ namespace Application
             }
             return response;
         }
+        public async Task<Response<List<MenuOption>>> ListMenuOptionsService(MenuOptionsQuery query)
+        {
+            Response<List<MenuOption>> response = new();
+            try
+            {
+                response = await _system.ListMenuOptionsProcedure(query);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex, currentClass, nameof(ListMenuOptionsService));
+            }
+            return response;
+        }
     }
 }

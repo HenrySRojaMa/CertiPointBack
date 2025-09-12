@@ -8,5 +8,6 @@ namespace InfrastructureDomain
         ITransaction Transaction { get; }
 
         Task<Response<List<CatalogItem>>> ListCatalogsProcedure(CatalogListQuery query);
+        Task<Response<List<MenuOption>>> ListMenuOptionsProcedure(MenuOptionsQuery query);
     }
 }
