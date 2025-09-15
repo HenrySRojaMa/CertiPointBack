@@ -149,7 +149,7 @@ namespace Infrastructure
             }
             catch (Exception ex)
             {
-                response.AddError(ex, currentClass, nameof(Execute));
+                response.AddError(ex, currentClass, nameof(Execute) + "." + spName);
             }
             return response;
         }
@@ -167,7 +167,7 @@ namespace Infrastructure
             }
             catch (Exception ex)
             {
-                response.AddError(ex, currentClass, nameof(Query));
+                response.AddError(ex, currentClass, nameof(Query) + "." + spName);
             }
             return response;
         }
@@ -189,7 +189,7 @@ namespace Infrastructure
             }
             catch (Exception ex)
             {
-                response.AddError(ex, currentClass, nameof(QueryMultiple));
+                response.AddError(ex, currentClass, nameof(QueryMultiple) + "." + spName);
             }
             return response;
         }
@@ -214,7 +214,7 @@ namespace Infrastructure
             }
             catch (Exception ex)
             {
-                response.AddError(ex, currentClass, nameof(QueryMultiple));
+                response.AddError(ex, currentClass, nameof(QueryMultiple) + "." + spName);
             }
             return response;
         }
@@ -244,7 +244,7 @@ namespace Infrastructure
             }
             catch (Exception ex)
             {
-                response.AddError(ex, currentClass, nameof(QueryMultiple));
+                response.AddError(ex, currentClass, nameof(QueryMultiple) + "." + spName);
             }
             return response;
         }
